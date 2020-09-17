@@ -1,0 +1,86 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    display: grid;
+    grid-template-rows: 1fr 726px 1fr;
+}
+
+.header {
+    background-color: #48CFAD;
+    box-shadow: 0px 0px 8px 0px #535353;
+}
+
+.header h1 {
+    color: #23282D;
+    margin-left: 10px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.content .ubication {
+    border: 5px solid #23282D;
+    box-shadow: 0px 2px 2px 2px #48CFAD;
+    width: 500px;
+    height: 300px;
+    padding: 5px 20px;
+}
+
+.content .ubication h3 {
+    font-size: 28px;
+}
+
+.content .ubication .form-container {
+    height: 190px;
+}
+
+.content .ubication .form-container form {
+    display: grid;
+    grid-template-columns: 28% 1fr;
+    grid-template-rows: repeat(3,1fr);
+    row-gap: 20px;
+    padding-top: 10px;
+}
+
+.content .ubication .form-container form label {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.content .ubication .form-container form div {
+    border: 1px solid gray;
+    border-radius: 5px;
+    width: 300px;
+    height: 25px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    display: grid;
+    align-items: center;
+    padding-left: 8px;
+}
+
+.footer {
+    background-color: #23282D;
+    border-top: 12px solid #48CFAD;
+    display: grid;
+    align-content: center;
+}
+
+.footer p {
+    color: white;
+    margin-left: 20px;
+}
+
+.mapa {
+    border: 1px solid lawngreen;
+    width: 550px;
+
+}

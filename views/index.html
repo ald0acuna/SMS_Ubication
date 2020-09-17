@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Coordenadas geograficas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+</head>
+<body onload="readFile();">
+    <div class="container">
+        <section class="header">
+            <h1>Coordenadas geograficas</h1>
+        </section>
+        <section class="content">
+            <div class="ubication">
+                <h3>Coordenadas:</h3>
+                <div class="form-container">
+                    <form action="/coordenadas/">
+                        <label for="Length">Longitud:</label>
+                        <div id="caja-longitude"></div>
+                        <!-- <br> -->
+                        <label for="Latitude">Latitud:</label>
+                        <div id="caja-latitude"></div>
+                        <!-- <br> -->
+                        <label for="Stamptime">Stamptime:</label>
+                        <div id="caja-stamptime"></div>
+                        <!-- <br> -->
+                        <!-- <button>Enviar</button> -->
+                    </form>
+                </div>
+            </div>
+            <div id="mymap" class="mapa" style="height: 500px;"></div>
+        </section>
+        <footer class="footer">
+            <p>2020 - Proyecto realizado para la Universidad del norte</p>
+        </footer>
+
+        <!--Scripts-->
+
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       
+        
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+        <script src='../js/front-end.js'></script>
+        <script src='../js/mapa.js'></script>
+    </div>
+</body>
+</html>
