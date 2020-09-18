@@ -3,9 +3,9 @@ const { fstat } = require('fs');
 var net =require('net');
 const httpserver = express();
 const path = require('path');
-var latitud ='soplao';
-var longitud ='chavez';
-var stamptime ='soplao';
+var latitud ='11';
+var longitud ='70';
+var stamptime ='2020';
 const fs= require('fs');
 const mysql = require('mysql');
 //Settings
@@ -92,6 +92,7 @@ var server = net.createServer(function(socket){
 });
 
 server.listen(port);
+
 
 database.connect((err) => {
     if (err) {

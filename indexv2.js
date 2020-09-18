@@ -1,18 +1,25 @@
 const express = require('express');
 const { fstat } = require('fs');
 var net =require('net');
-
+const mysql = require('mysql');
 const httpserver = express();
 const path = require('path');
-var latitud ='soplao';
-var longitud ='chavez';
-var stamptime ='soplao';
+var latitud ='11';
+var longitud ='70';
+var stamptime ='2020';
+
 const fs= require('fs');
 
 //Settings
 httpserver.set('port', 10000);
 
-
+//Conexión a la base de datos
+const database = mysql.createConnection({
+    host: 'truckdatabase.cdbskvzb6zoi.us-east-1.rds.amazonaws.com',
+    user: 'admin',
+    password: 'trucktracer',
+    database: 'gpsdata'
+});
 
 //Rutas
 httpserver.get('/', (req, res) => {
@@ -60,6 +67,12 @@ var server = net.createServer(function(socket){
 
         var gpsinfo = latitud+"/"+longitud+"/"+stamptime;
         
+        truckdata = {latitud: latitud, longitud: longitud, stamptime: stamptime}
+        let sql = 'INSERT INTO gpsdata SET ?';
+
+        let query = database.query(sql,truckdata,(err,result) =>{
+            if(err) throw err;
+        })
         
         fs.writeFile('coordenadas.txt', gpsinfo, function(error){
 
@@ -80,6 +93,14 @@ var server = net.createServer(function(socket){
 });
 
 server.listen(port);
+
+database.connect((err) => {
+    if (err) {
+        throw err;
+    }
+    console.log('Connected to DB');
+
+});
 
 
 //Listening the server
