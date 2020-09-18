@@ -11,7 +11,7 @@ var stamptime ='2020';
 const fs= require('fs');
 
 //Settings
-httpserver.set('port', 23000);
+httpserver.set('port', 10000);
 
 //Conexión a la base de datos
 const database = mysql.createConnection({
@@ -50,7 +50,7 @@ httpserver.get('/coordenadas.txt', (req,res) => {
 
 
 
-var port = (process.argv[2] || 12000);
+var port = (process.argv[2] || 5000);
 
 var server = net.createServer(function(socket){
     console.log('Truck Tracer\n');
