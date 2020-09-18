@@ -11,7 +11,7 @@ var stamptime ='2020';
 const fs= require('fs');
 
 //Settings
-httpserver.set('port', 10000);
+httpserver.set('port', 23000);
 
 //Conexión a la base de datos
 const database = mysql.createConnection({
@@ -89,7 +89,7 @@ var server = net.createServer(function(socket){
         
     });
     
-  
+  socket.destroy();
 });
 
 server.listen(port);
