@@ -14,8 +14,8 @@ httpserver.set('port', 10000);
 
 //Conexión a la base de datos
 const database = mysql.createConnection({
-    host: '34.238.175.220',
-    user: 'root',
+    host: 'truckdatabase.cdbskvzb6zoi.us-east-1.rds.amazonaws.com',
+    user: 'admin',
     password: 'trucktracer',
     database: 'gpsdata'
 });
