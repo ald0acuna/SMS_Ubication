@@ -72,6 +72,7 @@ var server = net.createServer(function(socket){
 
         let query = database.query(sql,truckdata,(err,result) =>{
             if(err) throw err;
+            console.log('Last insert ID:', res.insertId);
         })
         
         fs.writeFile('coordenadas.txt', gpsinfo, function(error){
