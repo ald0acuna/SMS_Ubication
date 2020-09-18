@@ -89,7 +89,7 @@ var server = net.createServer(function(socket){
         
     });
     
-  socket.destroy();
+  
 });
 
 server.listen(port);
