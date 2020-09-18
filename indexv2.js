@@ -18,7 +18,7 @@ const database = mysql.createConnection({
     host: 'truckdatabase.cdbskvzb6zoi.us-east-1.rds.amazonaws.com',
     user: 'admin',
     password: 'trucktracer',
-    database: 'truckdatabase'
+    database: 'gpsdata'
 });
 
 //Rutas
@@ -68,7 +68,7 @@ var server = net.createServer(function(socket){
         var gpsinfo = latitud+"/"+longitud+"/"+stamptime;
         
         truckdata = {latitud: latitud, longitud: longitud, stamptime: stamptime}
-        let sql = 'INSERT INTO coordenadas SET ?';
+        let sql = 'INSERT INTO gpsdata SET ?';
 
         let query = database.query(sql,truckdata,(err,result) =>{
             if(err) throw err;
