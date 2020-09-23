@@ -1,12 +1,11 @@
 const express = require('express');
 const { fstat } = require('fs');
-var net =require('net');
+
+var dgram =require('dgram');
 const mysql = require('mysql');
 const httpserver = express();
 const path = require('path');
-var latitud ='11';
-var longitud ='70';
-var stamptime ='2020';
+
 
 const fs= require('fs');
 
@@ -48,51 +47,62 @@ httpserver.get('/coordenadas.txt', (req,res) => {
 
 
 
-
+const udpserver = dgram.createSocket('udp4');
 
 var port = (process.argv[2] || 5000);
 
-var server = net.createServer(function(socket){
-    console.log('Truck Tracer\n');
 
-    socket.on('data', function(data){
+udpserver.on('error', (err)=>{
 
-        
-        var latitud= data.toString('utf8').split("/")[0];
-        latitud=  latitud;
-        var longitud= data.toString('utf8').split("/")[1];
-        longitud=  longitud;
-        var stamptime= data.toString('utf8').split("/")[2];
-        stamptime= stamptime;
-
-        var gpsinfo = latitud+"/"+longitud+"/"+stamptime;
-        
-        truckdata = {latitud: latitud, longitud: longitud, stamptime: stamptime}
-        let sql = 'INSERT INTO gpsdata SET ?';
-
-        let query = database.query(sql,truckdata,(err,result) =>{
-            if(err) throw err;
-        })
-        
-        fs.writeFile('coordenadas.txt', gpsinfo, function(error){
-
-            if(error){
-                return console.log(error);
-            }
-            console.log("File created");
-            console.log(gpsinfo);
-        })
-        
-       
-
-     
-        
-    });
+    console.log('server error:\n${err.stack}')
+    udpserver.close();
+    })
     
-  
-});
+    
+    udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'message' y msg
+            
+            console.log('Truck Tracer for udp\n');
+    
+        
+    
+                    
+            var latitud= msg.toString('utf8').split("/")[0];
+            latitud=  latitud;
+            var longitud= msg.toString('utf8').split("/")[1];
+            longitud=  longitud;
+            var stamptime= msg.toString('utf8').split("/")[2];
+            stamptime= stamptime;
+    
+            var gpsinfo = latitud+"/"+longitud+"/"+stamptime;
+    
+            /* truckdata = {latitud: latitud, longitud: longitud, stamptime: stamptime}
+            let sql = 'INSERT INTO gpsdata SET ?';
+    
+            let query = database.query(sql,truckdata,(err,result) =>{
+                if(err) throw err;
+            }) */
+            
+            
+            fs.writeFile('coordenadas.txt', gpsinfo, function(error){
+    
+                if(error){
+                    return console.log(error);
+                }
+                console.log("File created");
+                console.log(gpsinfo);
+            })
+    
+    
+    });
+    udpserver.bind(port);
+   
+    
 
-server.listen(port);
+    udpserver.on('listening', () => {
+        
+        const address = udpserver.address();
+        console.log(`udpserver on port ${address.port}`);
+    });
 
 database.connect((err) => {
     if (err) {

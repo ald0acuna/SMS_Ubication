@@ -3,7 +3,7 @@
 const tilesprovider = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var myMap = L.map('mymap').setView([11.01756,-74.85698], 13);
 
-var marker = L.marker([11,-74]).addTo(myMap)
+
 
 L.tileLayer(tilesprovider,{
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
