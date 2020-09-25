@@ -35,6 +35,7 @@ function readFile(){
     })
     var cArray = [];
     setInterval(function(){ 
+        var coor = [lat,lon];
         jQuery.get('../coordenadas.txt', function(txt){
             lat=  txt.toString('utf8').split("/")[0];
             $("#caja-latitude").text(lat);
@@ -42,11 +43,13 @@ function readFile(){
             $("#caja-longitude").text(lon);
             sT = txt.toString('utf8').split("/")[2];
             $("#caja-stamptime").text(sT);
-        
+            var coorsgt =[lat, lon];
             marker.setLatLng([lat, lon]).update();
-            var coor = [lat,lon];
-            cArray.push(coor)
-            line(cArray);
+            if (coor[0]!=coorsgt[0] && coor[1]!=coorsgt[1]  ) {
+                cArray.push(coorsgt)
+                line(cArray); 
+                
+            }
         })
         
 
