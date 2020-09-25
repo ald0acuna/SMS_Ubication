@@ -33,7 +33,7 @@ function readFile(){
         marker = L.marker([lat,lon]).addTo(myMap)
         
     })
-    var cooArray = [];
+    var cArray = [];
     setInterval(function(){ 
         jQuery.get('../coordenadas.txt', function(txt){
             lat=  txt.toString('utf8').split("/")[0];
@@ -43,19 +43,16 @@ function readFile(){
             sT = txt.toString('utf8').split("/")[2];
             $("#caja-stamptime").text(sT);
         
-            /* myMap.panTo(new L.LatLng(lat,lon)); */
-
             marker.setLatLng([lat, lon]).update();
             var coor = [lat,lon];
-            cooArray.push(coor)
-            line(cooArray);
+            cArray.push(coor)
+            line(cArray);
         })
         
 
     },1000);
-    //Función para la polilinea
-    function line(cooArray){
-        var polyline =L.polyline(cooArray, {color: 'red'}).addTo(myMap);
+    function line(cArray){
+        var polyline =L.polyline(cArray, {color: 'red'}).addTo(myMap);
     }
 };
 
