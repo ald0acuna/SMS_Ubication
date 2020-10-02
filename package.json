@@ -6,9 +6,10 @@
   "scripts": {
     "devStart": "nodemon indexv2.js"
   },
-  "author": "",
+  "author": "JJ",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "createServer": "^3.0.0",
     "express": "^4.17.1",
     "jsdom": "^16.4.0",
@@ -18,9 +19,21 @@
     "node-fetch": "^2.6.1",
     "path": "^0.12.7",
     "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.1",
     "window": "^4.2.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ald0acuna/SMS_Ubication.git"
+  },
+  "keywords": [
+    "udp"
+  ],
+  "bugs": {
+    "url": "https://github.com/ald0acuna/SMS_Ubication/issues"
+  },
+  "homepage": "https://github.com/ald0acuna/SMS_Ubication#readme"
 }
