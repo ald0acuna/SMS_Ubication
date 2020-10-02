@@ -1,12 +1,20 @@
 const express = require('express');
 const { fstat } = require('fs');
+var socketio = require('socket.io');
 
+
+
+var bodyParser = require('body-parser');
 var dgram =require('dgram');
 const mysql = require('mysql');
 const httpserver = express();
+const udpserver = dgram.createSocket('udp4');
+var server = require('http').Server(httpserver);       
+var io = socketio.listen(server); 
+
 const path = require('path');
 
-
+var urlencodedParser = bodyParser.urlencoded({ extended:false})
 const fs= require('fs');
 
 //Settings
@@ -20,10 +28,15 @@ const database = mysql.createConnection({
     database: 'gpsdata'
 });
 
+
+
 //Rutas
+
 httpserver.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/views/index.html'));
 });
+
+
 
 httpserver.get('/css/style.css', (req,res) => {
     res.sendFile(__dirname + '/css/style.css');
@@ -33,8 +46,24 @@ httpserver.get('/js/front-end.js', (req,res) => {
     res.sendFile(__dirname + '/js/front-end.js');
 });
 
-httpserver.get('/js/mapa.js', (req,res) => {
-    res.sendFile(__dirname + '/js/mapa.js');
+httpserver.get('/js/jquery.js', (req,res) => {
+    
+    res.sendFile(__dirname + '/js/jquery.js');
+});
+
+httpserver.get('/js/jquery.datetimepicker.min.css', (req,res) => {
+    res.sendFile(__dirname + '/js/jquery.datetimepicker.min.css');
+    
+});
+
+httpserver.get('/js/jquery.datetimepicker.full.js', (req,res) => {
+    res.sendFile(__dirname + '/js/jquery.datetimepicker.full.js');
+   
+});
+
+httpserver.get('/js/jquery-3.5.1.min.js', (req,res) => {
+    res.sendFile(__dirname + '/js/jquery-3.5.1.min.js');
+   
 });
 
 httpserver.get('/js/ubicacion.png', (req,res) => {
@@ -47,7 +76,7 @@ httpserver.get('/coordenadas.txt', (req,res) => {
 
 
 
-const udpserver = dgram.createSocket('udp4');
+
 
 var port = (process.argv[2] || 5000);
 
@@ -58,12 +87,81 @@ console.log('server error:\n${err.stack}')
 udpserver.close();
 })
     
+httpserver.post('/', urlencodedParser, function(req, res){
+    console.log(req.body);
+    var fi = req.body.start;
+    var ff= req.body.end;
     
+
+    var fi_up=fi.split(" ")[0]; //YYYY-MM-DD
+    var fi_down=fi.split(" ")[1];  //HH:MM
+
+    var ff_up=ff.split(" ")[0]; //YYYY-MM-DD
+    var ff_down=ff.split(" ")[1];  //HH:MM
+
+    //
+
+    var yeari =fi_up.split("/")[0]; //año
+    var monthi =fi_up.split("/")[1]; //mes
+    var dayi =fi_up.split("/")[2]; //dia
+
+    var houri =fi_down.split(":")[0]; //hora
+    var mini =fi_down.split(":")[1]; //minuto
+
+    //Fecha final
+
+    var yearf =ff_up.split("/")[0]; //año
+    var monthf =ff_up.split("/")[1]; //mes
+    var dayf =ff_up.split("/")[2]; //dia
+
+    var hourf =ff_down.split(":")[0]; //hora
+    var minf =ff_down.split(":")[1]; //minuto
+
+    
+    console.log("dia inicial :"+dayi)
+    console.log("dia final :"+dayf)
+    console.log("hora inicial :"+houri)
+    console.log("hora final :"+hourf)
+    console.log("min inicial :"+mini)
+    console.log("min final :"+minf)
+
+    var histlon = [];
+    var histlat=[];
+    var hist=[]
+    var rd = 'SELECT longitud, latitud FROM gpsdata WHERE (dia >= ? AND dia <= ? ) AND (hora >= ? AND hora <= ?) AND (minuto >=? AND minuto <=?)';
+    database.query(rd, [dayi,dayf,houri,hourf, mini, minf], function (err, result) {
+      if (err) throw err;
+      
+
+      
+      io.sockets.emit('historia', result); 
+     
+    });
+    
+    
+});
+
+
+
+
+
+
+
 udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'message' y msg
         
         console.log('Truck Tracer for udp\n');
 
     
+
+        
+           
+       /*  io.sockets.emit('udp message', msg.toString('utf-8')); */ //JY
+        //Enviar info a la base de datos
+        
+
+
+
+
 
                 
         var latitud= msg.toString('utf8').split("/")[0];
@@ -73,7 +171,7 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
         var stamptime= msg.toString('utf8').split("/")[2];
         
         var uppertime=stamptime.split(" ")[0]; //YYYY-MM-DD
-        var downtime=stamptime.split(" ")[1];  //HH-MM-SS
+        var downtime=stamptime.split(" ")[1];  //HH:MM:SS
 
         var year =uppertime.split("-")[0]; //año
         var month =uppertime.split("-")[1]; //mes
@@ -82,17 +180,12 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
         var hour =downtime.split(":")[0]; //hora
         var min =downtime.split(":")[1]; //minuto
         var sec =downtime.split(":")[2]; //segundo
-        var gpsinfo = latitud+"/"+longitud+"/"+stamptime;
 
-        truckdata = {latitud: latitud, longitud: longitud, año: year, mes: month, dia: day, hora: hour, minuto: min, segundo: sec}
-        let sql = 'INSERT INTO gpsdata SET ?';
+        
 
-        let query = database.query(sql,truckdata,(err,result) =>{
-            if(err) throw err;
-        })
-        
-        
-        fs.writeFile('coordenadas.txt', gpsinfo, function(error){
+         var gpsinfo = latitud+"/"+longitud+"/"+stamptime; 
+
+         fs.writeFile('coordenadas.txt', gpsinfo, function(error){
 
             if(error){
                 return console.log(error);
@@ -101,9 +194,17 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
             console.log(gpsinfo);
         })
 
+        truckdata = {latitud: latitud, longitud: longitud, año: year, mes: month, dia: day, hora: hour, minuto: min, segundo: sec}
+        let sql = 'INSERT INTO gpsdata SET ?';
+
+        let query = database.query(sql,truckdata,(err,result) =>{
+            if(err) throw err;
+        })
+        console.log(stamptime);      
+        
 
 });
-udpserver.bind(port);
+
 
     
 
@@ -121,10 +222,16 @@ database.connect((err) => {
 
 });
 
+udpserver.bind(port);
 
-//Listening the server
-httpserver.listen(httpserver.get('port'), () => {
-    console.log('Server on port', httpserver.get('port'));
+server.listen(10000, () => {
+    console.log("Server on port 10000");
+
 });
 
+
+//Listening the server
+/* httpserver.listen(httpserver.get('port'), () => {
+    console.log('Server on port', httpserver.get('port'));
+}); */
 

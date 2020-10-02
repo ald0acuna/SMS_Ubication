@@ -5,9 +5,9 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.container {
+.container-css {
     display: grid;
-    grid-template-rows: 1fr 726px 1fr;
+    grid-template-rows: 20px 726px 1fr;
 }
 
 .header {
@@ -16,55 +16,96 @@ body {
 }
 
 .header h1 {
+    margin: 0px;
+    font-size: 13px;
     color: #23282D;
     margin-left: 10px;
+    margin-top: 2px;
 }
 
-.content {
+/* .content {
     display: flex;
     justify-content: space-around;
     align-items: center;
+} */
+
+.content .user-container {
+    display: flex;
+}
+
+.content .user-container .calendar {
+    display: flex;
+}
+
+.content .user-container .calendar h6 {
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.content .user-container .calendar input {
+    height: 25px;
+    margin-left: 15px;
+    margin-top: 20px;
+}
+
+content .user-container .calendar button {
+    margin-left: 20px;
+    margin-top: 17px;
+    height: 30px;
+    width: 80px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 7px;
+    background-color: #48CFAD;
+    color: black;
 }
 
 .content .ubication {
     border: 5px solid #23282D;
     box-shadow: 0px 2px 2px 2px #48CFAD;
-    width: 500px;
-    height: 300px;
-    padding: 5px 20px;
+    width: 250px;
+    height: 100px;
+    padding-top: 5px;
+    padding-left:  5px;
+    padding-right:  10px;
+    margin-left: 150px;
+    margin-top: 10px;
 }
 
 .content .ubication h3 {
-    font-size: 28px;
+    font-size: 10px;
+    margin: 0px;
+    margin-bottom: 2px;
 }
 
 .content .ubication .form-container {
-    height: 190px;
+    height: 30px;
 }
 
 .content .ubication .form-container form {
     display: grid;
     grid-template-columns: 28% 1fr;
     grid-template-rows: repeat(3,1fr);
-    row-gap: 20px;
-    padding-top: 10px;
+    /* row-gap: 20px; */
+    padding-top: 2px;
 }
 
 .content .ubication .form-container form label {
-    font-size: 25px;
-    margin-bottom: 20px;
+    font-size: 8px;
+    margin-right:20px;
+    /* margin-bottom: 20px; */
 }
 
 .content .ubication .form-container form div {
     border: 1px solid gray;
     border-radius: 5px;
-    width: 300px;
-    height: 25px;
+    width: 100px;
+    height: 15px;
     margin-left: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     display: grid;
     align-items: center;
     padding-left: 8px;
+    font-size: 8px;
 }
 
 .footer {
@@ -81,6 +122,5 @@ body {
 
 .mapa {
     border: 1px solid lawngreen;
-    width: 550px;
-
+    width: 100%;
 }

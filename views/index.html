@@ -1,45 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src='/socket.io/socket.io.js'></script> <!-- JY -->
+   <!--  <script src='http://localhost:10000/socket.io/socket.io.js'></script> -->
+   <script>var socket = io.connect('http://186.112.194.240:10000/');</script>
+    <!-- <script> /* var socket = io.connect('http://localhost:10000');  */ 
+    
+       
+        var udpserver;
+        udpserver = io.connect('http://localhost:10000');
+        udpserver.on('udp message', function (hist) { //como se va a llamar igual
+        console.log(hist);
+         /* lats = hist[0];
+        long = hist[1];  */
+        });
+        
+
+        
+     </script> -->
+     
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../css/style.css">
+    <!-- <link rel="stylesheet" href="../css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="../js/jquery.datetimepicker.min.css">
     <title>Coordenadas geograficas</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
    crossorigin=""/>
+    
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery.datetimepicker.full.js"></script>
 </head>
 <body onload="readFile();">
-    <div class="container">
+    <div class="container-css">
         <section class="header">
             <h1>Coordenadas geograficas</h1>
         </section>
         <section class="content">
-            <div class="ubication">
-                <h3>Coordenadas:</h3>
-                <div class="form-container">
-                    <form action="/coordenadas/">
-                        <label for="Length">Longitud:</label>
-                        <div id="caja-longitude"></div>
-                        <!-- <br> -->
-                        <label for="Latitude">Latitud:</label>
-                        <div id="caja-latitude"></div>
-                        <!-- <br> -->
-                        <label for="Stamptime">Stamptime:</label>
-                        <div id="caja-stamptime"></div>
-                        <!-- <br> -->
-                        <!-- <button>Enviar</button> -->
-                    </form>
+            <div class="user-container">
+
+                <form class="calendar" method="POST" action="/">
+                    <h6>Desde:</h6>
+                    <input id="data-time-one" name="start" autocomplete="off">
+                    <h6>Hasta:</h6>
+                    <input id="data-time-two" name="end" autocomplete="off">
+                    <script>
+                        $("#data-time-one").datetimepicker();
+                        $("#data-time-two").datetimepicker();
+                    </script>
+                    <button type="submit" onclick="historics()">Submit</button>
+                    
+                </form>
+
+                <div class="ubication">
+                    <h3>Coordenadas:</h3>
+                    <div class="form-container">
+                        <form action="/coordenadas/">
+                            <label for="Length">Longitud:</label>
+                            <div id="caja-longitude"></div>
+                            <!-- <br> -->
+                            <label for="Latitude">Latitud:</label>
+                            <div id="caja-latitude"></div>
+                            <!-- <br> -->
+                            <label for="Stamptime">Stamptime:</label>
+                            <div id="caja-stamptime"></div>
+                            <!-- <br> -->
+                            <!-- <button>Enviar</button> -->
+                        </form>
+                    </div>
                 </div>
+                <button onclick="historics()">Historicos</button>
             </div>
-            <div id="mymap" class="mapa" style="height: 500px;"></div>
+
+            <div id="mymap" class="mapa" style="height: 510px;"></div>
         </section>
         <footer class="footer">
             <p>2020 - Proyecto realizado para la Universidad del norte</p>
         </footer>
 
         <!--Scripts-->
-
+        <script src="../js/jquery-3.5.1.min.js"></script>
+        <!-- <script src="../js/bootstrap.min.js"></script> -->
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
        
@@ -48,7 +90,8 @@
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
         <script src='../js/front-end.js'></script>
-        <script src='../js/mapa.js'></script>
+        
+        
     </div>
 </body>
 </html>
