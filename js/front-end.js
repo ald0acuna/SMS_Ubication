@@ -1,15 +1,7 @@
-/* const jq =req('j') */
-const mysql = require('mysql');
+
 const tilesprovider = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var myMap = L.map('mymap').setView([11.01756,-74.85698], 13);
-
-//Conexión a la base de datos
-const database = mysql.createConnection({
-    host: 'truckdatabase.cdbskvzb6zoi.us-east-1.rds.amazonaws.com',
-    user: 'admin',
-    password: 'trucktracer',
-    database: 'gpsdata'
-});
+/* var myMapH = L.map('mymap').setView([11.01756,-74.85698], 13); */
 
 var i = 1;
 
@@ -20,6 +12,13 @@ L.tileLayer(tilesprovider,{
 
 }).addTo(myMap)
 
+/* L.tileLayer(tilesprovider,{
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18
+    
+
+}).addTo(myMapH) */
+
 var mymarker = L.icon({
     iconUrl: 'ubicacion.png',
     iconSize: [60,60],
@@ -27,11 +26,29 @@ var mymarker = L.icon({
 
 })
 
+function historics(){
+    
+    socket.on('historia', function (output) {
+    var hist =[];
 
-
+    var coor =[];
+    
+    for (var i of output) {
+        
+         coor =[i.latitud,i.longitud]
+         hist.push(coor)
+         
+    }
+    console.log(hist);
+    var polyline =L.polyline(hist, {color: 'red'}).addTo(myMap);
+    });
+      
+}
 
 function readFile(){
-    /* jQuery.get('../coordenadas.txt', function(txt){
+    jQuery.get('../coordenadas.txt', function(txt){
+
+        
 
         lat=  txt.toString('utf8').split("/")[0];
         $("#caja-latitude").text(lat);
@@ -42,9 +59,9 @@ function readFile(){
         marker = L.marker([lat,lon]).addTo(myMap)
         
     })
-    var cArray = []; */
+    var cArray = [];
     setInterval(function(){ 
-        /* var coor = [lat,lon];
+        var coor = [lat,lon];
         jQuery.get('../coordenadas.txt', function(txt){
             lat=  txt.toString('utf8').split("/")[0];
             $("#caja-latitude").text(lat);
@@ -59,20 +76,15 @@ function readFile(){
                 line(cArray); 
                 
             }
-        }) */
+        })
 
 
-        var min = '06';
-        var sql = 'SELECT * FROM gpsdata WHERE minuto = ?';
-        con.query(sql, [min], function (err, result) {
-          if (err) throw err;
-          console.log(result);
-        });
+      
            
 
     },1000);
-    /* function line(cArray){
+    function line(cArray){
         var polyline =L.polyline(cArray, {color: 'red'}).addTo(myMap);
-    }*/
+    }
 }; 
 
