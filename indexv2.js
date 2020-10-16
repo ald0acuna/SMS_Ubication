@@ -28,7 +28,9 @@ const database = mysql.createConnection({
     database: 'gpsdata'
 });
 
+
 //comentario de prueba
+
 
 //Rutas
 
@@ -91,6 +93,7 @@ httpserver.post('/', urlencodedParser, function(req, res){
     console.log(req.body);
     var fi = req.body.start;
     var ff= req.body.end;
+
     
 
     var fi_up=fi.split(" ")[0]; //YYYY-MM-DD
@@ -141,6 +144,7 @@ httpserver.post('/', urlencodedParser, function(req, res){
     });
     
     
+
 });
 
 
@@ -179,6 +183,7 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
         var month =uppertime.split("-")[1]; //mes
         var day =uppertime.split("-")[2]; //dia
 
+
        
 //MODIFICAR LECTURA DEL ULTIMO DATO------------------------------------------------------------------------------
 
@@ -190,6 +195,7 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
 
         fs.writeFile('coordenadas.txt', gpsinfo, function(error){
 
+
             if(error){
                 return console.log(error);
             }
@@ -197,13 +203,17 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
             console.log(gpsinfo);
         })
 
+
         truckdata = {latitud: latitud, longitud: longitud, tiempo: timeformat}
+
         let sql = 'INSERT INTO gpsdata SET ?';
 
         let query = database.query(sql,truckdata,(err,result) =>{
             if(err) throw err;
         })
+
         console.log(stamptime,timeformat);      
+
         
 
 });
