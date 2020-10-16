@@ -28,7 +28,7 @@ const database = mysql.createConnection({
     database: 'gpsdata'
 });
 
-
+//comentario de prueba
 
 //Rutas
 
