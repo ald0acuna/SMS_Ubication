@@ -96,6 +96,8 @@ httpserver.post('/', urlencodedParser, function(req, res){
     var fi_up=fi.split(" ")[0]; //YYYY-MM-DD
     var fi_down=fi.split(" ")[1];  //HH:MM
 
+    
+
     var ff_up=ff.split(" ")[0]; //YYYY-MM-DD
     var ff_down=ff.split(" ")[1];  //HH:MM
 
@@ -105,8 +107,11 @@ httpserver.post('/', urlencodedParser, function(req, res){
     var monthi =fi_up.split("/")[1]; //mes
     var dayi =fi_up.split("/")[2]; //dia
 
-    var houri =fi_down.split(":")[0]; //hora
-    var mini =fi_down.split(":")[1]; //minuto
+    /* var houri =fi_down.split(":")[0]; //hora
+    var mini =fi_down.split(":")[1]; //minuto */
+
+    fi = dayi+"/"+monthi+"/"+yeari+" "+fi_down+":00" //
+    console.log(fi);
 
     //Fecha final
 
@@ -114,22 +119,19 @@ httpserver.post('/', urlencodedParser, function(req, res){
     var monthf =ff_up.split("/")[1]; //mes
     var dayf =ff_up.split("/")[2]; //dia
 
-    var hourf =ff_down.split(":")[0]; //hora
-    var minf =ff_down.split(":")[1]; //minuto
+   /*  var hourf =ff_down.split(":")[0]; //hora
+    var minf =ff_down.split(":")[1]; //minuto */
+
+    ff = dayf+"/"+monthf+"/"+yearf+" "+ff_down+":00"
+    console.log(ff);
 
     
-    console.log("dia inicial :"+dayi)
-    console.log("dia final :"+dayf)
-    console.log("hora inicial :"+houri)
-    console.log("hora final :"+hourf)
-    console.log("min inicial :"+mini)
-    console.log("min final :"+minf)
 
     var histlon = [];
     var histlat=[];
     var hist=[]
-    var rd = 'SELECT longitud, latitud FROM gpsdata WHERE (dia >= ? AND dia <= ? ) AND (hora >= ? AND hora <= ?) AND (minuto >=? AND minuto <=?)';
-    database.query(rd, [dayi,dayf,houri,hourf, mini, minf], function (err, result) {
+    var rd = 'SELECT longitud, latitud FROM gpsdata WHERE (tiempo >= ? AND tiempo <= ? ) ';
+    database.query(rd, [fi,ff], function (err, result) {
       if (err) throw err;
       
 
@@ -177,15 +179,16 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
         var month =uppertime.split("-")[1]; //mes
         var day =uppertime.split("-")[2]; //dia
 
-        var hour =downtime.split(":")[0]; //hora
-        var min =downtime.split(":")[1]; //minuto
-        var sec =downtime.split(":")[2]; //segundo
+       
+//MODIFICAR LECTURA DEL ULTIMO DATO------------------------------------------------------------------------------
+
+        var timeformat= day+"/"+month+"/"+year+" "+downtime;
 
         
 
-         var gpsinfo = latitud+"/"+longitud+"/"+stamptime; 
+        var gpsinfo = latitud+"/"+longitud+"/"+timeformat;   
 
-         fs.writeFile('coordenadas.txt', gpsinfo, function(error){
+        fs.writeFile('coordenadas.txt', gpsinfo, function(error){
 
             if(error){
                 return console.log(error);
@@ -194,13 +197,13 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
             console.log(gpsinfo);
         })
 
-        truckdata = {latitud: latitud, longitud: longitud, año: year, mes: month, dia: day, hora: hour, minuto: min, segundo: sec}
+        truckdata = {latitud: latitud, longitud: longitud, tiempo: timeformat}
         let sql = 'INSERT INTO gpsdata SET ?';
 
         let query = database.query(sql,truckdata,(err,result) =>{
             if(err) throw err;
         })
-        console.log(stamptime);      
+        console.log(stamptime,timeformat);      
         
 
 });
