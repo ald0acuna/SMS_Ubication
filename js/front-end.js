@@ -4,6 +4,10 @@ var myMapTR = L.map('mymapTR').setView([11.01756,-74.85698], 13);
 document.getElementById("mymap").style.display = "none";
 var i = 1;
 
+marker1 = L.marker([11.01756,-74.85698])
+var puntos= L.layerGroup([marker1])
+    .addTo(myMap);
+
 L.tileLayer(tilesprovider,{
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18
@@ -33,26 +37,35 @@ var hist = [
 var polyline =L.polyline(hist, {color: 'red'}).addTo(myMap); // myMap=mapa de historicos
 function historics(){
 
+    puntos.clearLayers();
     document.getElementById("mymap").style.display = "block";
 
 	document.getElementById("mymapTR").style.display = "none";
     
     socket.on('historia', function (output) {
+    
     hist =[];
 
     var coor =[];
     
-    for (var i of output) {
-        console.log("variable i: "+i);
-         coor =[i.latitud,i.longitud]
-         hist.push(coor)
-         markerCircle = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'deeppink'}).addTo(myMap)
-         markerCircle.bindTooltip("</h4>tiempo: "+ i.tiempo)
-         
+        for (var i of output) {
+            console.log("variable i: "+i);
+            coor =[i.latitud,i.longitud]
+            hist.push(coor)
+            markerCircle = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'deeppink'})
+            markerCircle.bindTooltip("</h4>tiempo: "+ i.tiempo)
+            puntos.addLayer(markerCircle)
+            
+        }
+        puntos.addTo(myMap)
+        console.log(hist);
+    if (output.length != 0){    
+        polyline.setLatLngs(hist);
+        myMap.setView(polyline.getCenter())
+    }else{
+        polyline.setLatLngs([]);
+        alert("No hay recorridos dentro de las fechas ingresadas")
     }
-    console.log(hist);
-    polyline.setLatLngs(hist);
-    myMap.setView(polyline.getCenter())
     //var polyline =L.polyline(hist, {color: 'red'}).addTo(myMap);
     });
       
