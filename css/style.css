@@ -3,21 +3,27 @@ body {
     padding: 0px;
     font-size: 13px;
     font-family: Arial, Helvetica, sans-serif;
+    height: 600px;
 }
 
-.container-css {
+/* .container-css {
     display: grid;
-    grid-template-rows: 20px 726px 1fr;
+    grid-template-rows: 3% 726px 1fr;
+} */
+
+.container-css {
+    width: 1350px
 }
 
 .header {
     background-color: #48CFAD;
     box-shadow: 0px 0px 8px 0px #535353;
+    width: 100%;
 }
 
 .header h1 {
     margin: 0px;
-    font-size: 13px;
+    font-size: 8px;
     color: #23282D;
     margin-left: 10px;
     margin-top: 2px;
@@ -29,15 +35,16 @@ body {
     align-items: center;
 } */
 
-.content .user-container {
+/* .content .user-container {
     display: flex;
-}
+} */
 
-.content .user-container .calendar {
+/* .content .user-container .calendar {
     display: flex;
-}
+    height: 80px; 
+} */
 
-.content .user-container .calendar h6 {
+/* .content .user-container .calendar h6 {
     margin-left: 10px;
     margin-top: 20px;
 }
@@ -48,40 +55,132 @@ body {
     margin-top: 20px;
 }
 
-content .user-container .calendar button {
+content .user-container .calendar .historicos {
     margin-left: 20px;
     margin-top: 17px;
-    height: 30px;
+    height: 200px;
     width: 80px;
     border: 1px solid rgb(0, 0, 0);
     border-radius: 7px;
     background-color: #48CFAD;
     color: black;
+} */
+
+.content {
+    /* background-color: lightskyblue; */
+    margin-left: 50px;
+    position: absolute;
+    z-index: 50;
+    width: 100%;
 }
 
-.content .ubication {
+.user-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.user-container .calendar {
+    display: grid;
+    grid-template-columns:  repeat(13,1fr);
+    grid-template-rows: 1fr;
+}
+
+.user-container .calendar h6 {
+    font-size: 12px;
+    margin-right: 5px;
+    margin-left: 7px;
+    margin-top: 15px;
+}
+
+.user-container .calendar input {
+    height: 30px;
+    margin-top: 20px;
+    margin-left: 7px;
+    margin-right: 7px;
+    border-radius: 10px;
+    padding-left: 10px;
+    border-color: lightseagreen;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px lightseagreen;
+}
+
+#date_timepicker_start {
+    width: 100px;
+}
+
+#date_timepicker_end {
+    width: 100px;
+}
+
+.user-container .calendar select {
+    margin-top: 22px;
+    height: 30px;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-color: lightseagreen;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px lightseagreen;
+}
+
+/* .user-container .calendar .h6-carro {
+    margin-left: -35px;
+} */
+
+.user-container .calendar #carro {
+    width: 90px;
+}
+
+.user-container .calendar button {
+    margin-left: 10px;
+    border-radius: 10px;
+    height: 30px;
+    margin-top: 22px;
+    border-color: lightpink;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px lightpink;
+}
+
+/*Tiempo real*/
+
+.content .tiemporeal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* margin-left: 40px; */
+    
+}
+
+.content .tiemporeal button {
+    margin-left: 20px;
+    border-radius: 10px;
+    height: 30px;
+    width: 110px;
+    margin-top: 20px;
+    border-color: lightskyblue;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px lightskyblue;
+}
+
+.content .tiemporeal .ubication {
     border: 5px solid #23282D;
+    background-color: white;
     box-shadow: 0px 2px 2px 2px #48CFAD;
     width: 250px;
-    height: 100px;
+    height: 85px;
     padding-top: 5px;
     padding-left:  5px;
     padding-right:  10px;
-    margin-left: 150px;
+    margin-left: 50px;
     margin-top: 10px;
 }
 
-.content .ubication h3 {
+.content .tiemporeal .ubication h3 {
     font-size: 10px;
     margin: 0px;
     margin-bottom: 2px;
 }
 
-.content .ubication .form-container {
+.content .tiemporeal .ubication .form-container {
     height: 30px;
 }
 
-.content .ubication .form-container form {
+.content .tiemporeal .ubication .form-container form {
     display: grid;
     grid-template-columns: 28% 1fr;
     grid-template-rows: repeat(3,1fr);
@@ -89,13 +188,13 @@ content .user-container .calendar button {
     padding-top: 2px;
 }
 
-.content .ubication .form-container form label {
+.content .tiemporeal .ubication .form-container form label {
     font-size: 8px;
     margin-right:20px;
     /* margin-bottom: 20px; */
 }
 
-.content .ubication .form-container form div {
+.content .tiemporeal .ubication .form-container form div {
     border: 1px solid gray;
     border-radius: 5px;
     width: 100px;
@@ -107,7 +206,7 @@ content .user-container .calendar button {
     padding-left: 8px;
     font-size: 8px;
 }
-
+/* 
 .footer {
     background-color: #23282D;
     border-top: 12px solid #48CFAD;
@@ -118,9 +217,20 @@ content .user-container .calendar button {
 .footer p {
     color: white;
     margin-left: 20px;
-}
+} */
 
 .mapa {
     border: 1px solid lawngreen;
+    width: 100%; 
+    position: absolute; 
+    z-index: 10;   
+}
+
+.mapaTR{
+   /*  top: 145px; */
     width: 100%;
+    position: absolute;
+    border: 1px solid rgb(231, 101, 13); 
+    /* display: none; */
+    z-index: 20;
 }
