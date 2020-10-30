@@ -115,7 +115,7 @@
                                     coor =[i.latitud,i.longitud]
                                     hist.push(coor)
                                     markerCircle = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'white'}) //CAMBIOOSSSSSSS
-                                    markerCircle.bindTooltip("</h4>tiempo: "+ i.tiempo)
+                                    markerCircle.bindTooltip("</h4>tiempo: "+ i.stamptime)
                                     puntos.addLayer(markerCircle)
                                     //console.log(hist); //Repetido de linea 65 y 58
                                 } else {
@@ -123,7 +123,7 @@
                                     coorTwo =[i.latitud,i.longitud]
                                     histTwo.push(coorTwo)
                                     markerCircleTwo = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'black'})
-                                    markerCircleTwo.bindTooltip("</h4>tiempo: "+ i.tiempo)
+                                    markerCircleTwo.bindTooltip("</h4>tiempo: "+ i.stamptime)
                                     puntosTwo.addLayer(markerCircleTwo)
                                     //console.log(histTwo); //Repetido de linea 65 y 58
                                 }
@@ -136,7 +136,12 @@
                             if (output.length != 0){    
                                 polyline.setLatLngs(hist);
                                 polylineTwo.setLatLngs(histTwo)
-                                myMap.setView(polyline.getCenter())
+                                if(hist.length!=0){
+                                    myMap.setView(polyline.getCenter())
+                                }else{
+                                    myMap.setView(polylineTwo.getCenter())
+                                }
+                               
                             } else {
                                 alert("No hay recorridos dentro de las fechas ingresadas")
                                 polyline.setLatLngs([]);
