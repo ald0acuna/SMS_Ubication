@@ -130,7 +130,7 @@ io.on('connection', socket => {
         var histlat=[];
         var hist=[];
         
-        var rd = `SELECT longitud, latitud, tiempo, vehiculo FROM gpsdata WHERE (tiempo BETWEEN '${fiDate}' AND '${ffDate}') AND (vehiculo='${id}')`;
+        var rd = `SELECT longitud, latitud, tiempo, vehiculo FROM gpsdata WHERE (tiempo BETWEEN '${fiDate}' AND '${ffDate}')`;
         console.log(rd);
         database.query(rd, function (err, result) {
             
@@ -184,9 +184,9 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
     })
 
 
-    truckdata = {latitud: latitud, longitud: longitud, tiempo: timeformat, vehiculo: vehiculo }
+    truckdata = {latitud: latitud, longitud: longitud, stamptime : timeformat, vehiculo: vehiculo, sensor:sensor }
 
-    /* let sql = 'INSERT INTO gpsdata SET ?';
+    /* let sql = 'INSERT INTO muestreo SET ?';
 
     let query = database.query(sql,truckdata,(err,result) =>{
         if(err) throw err;

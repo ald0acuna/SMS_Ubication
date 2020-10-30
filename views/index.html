@@ -83,6 +83,7 @@
                         e.preventDefault();
 
                         puntos.clearLayers();
+                        puntosTwo.clearLayers();
                         document.getElementById("mymap").style.display = "block";
 
                         document.getElementById("mymapTR").style.display = "none";
@@ -103,27 +104,43 @@
                         socket.on('historia', function (output) {
     
                             hist =[];
+                            histTwo=[];
                             var coor =[];
                             
                         
                             for (var i of output) {
-                                console.log("variable i: ")
-                                coor =[i.latitud,i.longitud]
-                                hist.push(coor)
-                                markerCircle = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'black'})
-                                markerCircle.bindTooltip("</h4>tiempo: "+ i.tiempo)
-                                puntos.addLayer(markerCircle)
+                                console.log("variable i.v: "+i.vehiculo)
+                                if(i.vehiculo==1){
+                
+                                    coor =[i.latitud,i.longitud]
+                                    hist.push(coor)
+                                    markerCircle = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'white'}) //CAMBIOOSSSSSSS
+                                    markerCircle.bindTooltip("</h4>tiempo: "+ i.tiempo)
+                                    puntos.addLayer(markerCircle)
+                                    //console.log(hist); //Repetido de linea 65 y 58
+                                } else {
+                                    
+                                    coorTwo =[i.latitud,i.longitud]
+                                    histTwo.push(coorTwo)
+                                    markerCircleTwo = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'black'})
+                                    markerCircleTwo.bindTooltip("</h4>tiempo: "+ i.tiempo)
+                                    puntosTwo.addLayer(markerCircleTwo)
+                                    //console.log(histTwo); //Repetido de linea 65 y 58
+                                }
                                     
                             }
                             
                             puntos.addTo(myMap)
+                            puntosTwo.addTo(myMap)
                                 
                             if (output.length != 0){    
                                 polyline.setLatLngs(hist);
+                                polylineTwo.setLatLngs(histTwo)
                                 myMap.setView(polyline.getCenter())
                             } else {
                                 alert("No hay recorridos dentro de las fechas ingresadas")
                                 polyline.setLatLngs([]);
+                                polylineTwo.setLatLngs([]);
                             }
                         });
 

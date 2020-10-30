@@ -5,7 +5,9 @@ document.getElementById("mymap").style.display = "none";
 i = 1;
 
 marker1 = L.marker([11.01756,-74.85698])
+marker2 = L.marker([11.01756,-74.85698])
 puntos= L.layerGroup([marker1]).addTo(myMap);
+puntosTwo=L.layerGroup([marker2]).addTo(myMap);
 
 L.tileLayer(tilesprovider,{
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -33,7 +35,7 @@ hist = [
     [34.04, -118.2]
 ];
 polyline =L.polyline(hist, {color: 'red'}).addTo(myMap); // myMap=mapa de historicos
-
+polylineTwo =L.polyline(hist, {color: 'blue'}).addTo(myMap);
 
 function tiempoReal(){
 
