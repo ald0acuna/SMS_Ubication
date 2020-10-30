@@ -100,13 +100,13 @@
                         socket.emit("valoresEntrada", valoresEntrada);
 
     
-                        socket.on('historia', function (msg) {
+                        socket.on('historia', function (output) {
     
                             hist =[];
                             var coor =[];
                             
                         
-                            for (var i of msg) {
+                            for (var i of output) {
                                 console.log("variable i: ")
                                 coor =[i.latitud,i.longitud]
                                 hist.push(coor)
@@ -118,7 +118,7 @@
                             
                             puntos.addTo(myMap)
                                 
-                            if (msg.length != 0){    
+                            if (output.length != 0){    
                                 polyline.setLatLngs(hist);
                                 myMap.setView(polyline.getCenter())
                             } else {
