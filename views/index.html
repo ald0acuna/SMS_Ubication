@@ -43,17 +43,18 @@
 
                     <script>     
                         $("#date_timepicker_start").datetimepicker({
-                            /* format:'d.m.Y H:i', */
+                            /*format:'d.m.Y H:i',*/
                             timepicker:true,
                             onShow: function (ct) {
                                 this.setOptions({
                                     step: 15,
                                     maxDate: jQuery('#date_timepicker_end').val() ? jQuery('#date_timepicker_end').val() : false
+
                                 })
                             },
                         });
                         $("#date_timepicker_end").datetimepicker({
-                            /* format:'d.m.Y H:i', */
+                            /*format:'d.m.Y H:i',*/
                             timepicker:true,
                             onShow: function (ct) {
                                 this.setOptions({
@@ -61,6 +62,7 @@
                                     minDate: jQuery('#date_timepicker_start').val() ? jQuery('#date_timepicker_start').val() : false
                                 })
                             },
+                            
                         });    
                     </script>
 
@@ -87,6 +89,7 @@
 
                         inicio = e.target.elements.date_timepicker_start.value;
                         fin = e.target.elements.date_timepicker_end.value;
+                        console.log("Inicio: "+inicio+",fin: "+fin)
                         vehiculo= e.target.elements.carro.value;
 
                         var valoresEntrada = [];
@@ -97,12 +100,14 @@
                         socket.emit("valoresEntrada", valoresEntrada);
 
     
-                        socket.on('historia', function (output) {
+                        socket.on('historia', function (msg) {
     
                             hist =[];
                             var coor =[];
                             
-                            for (var i of output) {
+                        
+                            for (var i of msg) {
+                                console.log("variable i: ")
                                 coor =[i.latitud,i.longitud]
                                 hist.push(coor)
                                 markerCircle = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'black'})
@@ -113,7 +118,7 @@
                             
                             puntos.addTo(myMap)
                                 
-                            if (output.length != 0){    
+                            if (msg.length != 0){    
                                 polyline.setLatLngs(hist);
                                 myMap.setView(polyline.getCenter())
                             } else {
@@ -139,7 +144,7 @@
                                 <label for="Stamptime">Stamptime:</label>
                                 <div id="caja-stamptime"></div>
                                 <label for="ax">Ax:</label>
-                                <div id="caja-ax"></div>
+                                <div id="caja-sensor"></div>
                             </form>
                         </div>
                     </div>

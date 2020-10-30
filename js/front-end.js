@@ -65,6 +65,8 @@ function readFile(){
             $("#caja-longitude").text(lon);
             sT = txt.toString('utf8').split("/")[2];  //CAMBIAR STAMPTIME AQUI O EN EL SERVIDOR
             $("#caja-stamptime").text(sT);
+            sT = txt.toString('utf8').split("/")[4];  //Sensor
+            $("#caja-sensor").text(sT);
             var coorsgt =[lat, lon];
             marker.setLatLng([lat, lon]).update();
             myMapTR.setView([lat, lon])

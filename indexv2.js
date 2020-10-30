@@ -96,61 +96,42 @@ udpserver.close();
 io.on('connection', socket => {
 
     socket.on('valoresEntrada', msg => {
-        //console.log(msg)
-
+        
         var fi = msg[0];
-        var hora = msg[1];
-        var minuto = msg[2];
-        var ff = msg[3];
-        var horaTF = msg[4];
-        var minutoTF = msg[5];
-        var id = msg[6];
+        var ff = msg[1];
+        var id = msg[2];
+        //console.log("f---- "+fi+"  "+ff);
+        var fi_up= fi.split(" ")[0];
+        var fi_down= fi.split(" ")[1];
+        var yeari =fi_up.split("/")[0]; //año
+        var monthi =fi_up.split("/")[1]; //mes
+        var dayi =fi_up.split("/")[2]; //dia
 
-        if (hora  <10 ) {
-            hora = "0" + hora;
-            console.log(hora)
-        };
-    
-        if (minuto< 10) {
-            minuto = "0" + minuto
-            console.log(minuto)
-        };
-    
-        if (horaTF  <10 ) {
-            horaTF = "0" + horaTF;
-            console.log(horaTF)
-        } ;
-    
-        if (minutoTF< 10) {
-            minutoTF = "0" + minutoTF
-            console.log(minutoTF)
-        };
-    
-        var yeari =fi.split("/")[0]; //año
-        var monthi =fi.split("/")[1]; //mes
-        var dayi =fi.split("/")[2]; //dia
-    
-    
-        fi =dayi+"/"+monthi+"/"+yeari+" "+hora+":"+minuto+":00" //
-        console.log(fi);
-    
-        //Fecha final
-    
-        var yearf =ff.split("/")[0]; //año
-        var monthf =ff.split("/")[1]; //mes
-        var dayf =ff.split("/")[2]; //dia
-    
-    
-    
-        ff = dayf+"/"+monthf+"/"+yearf+" "+horaTF+":"+minutoTF+":00"
-        console.log(ff);
-    
+        var hi = fi_down.split(":")[0];
+        var mi = fi_down.split(":")[1];
+        fiDate = yeari+'-'+monthi+'-'+dayi+' '+hi+':'+mi+':00';
+        
+        var ff_up= ff.split(" ")[0];
+        var yearf =ff_up.split("/")[0]; //año
+        var monthf =ff_up.split("/")[1]; //mes
+        var dayf =ff_up.split("/")[2]; //dia
+
+        var hf = fi_down.split(":")[0];
+        var mf = fi_down.split(":")[1];
+
+        ffDate = yearf+'-'+monthf+'-'+dayf+' '+hf+':'+mf+':00';
+        console.log(ffDate);
+
+        /*
+        cumpleanos = new Date(1995,0,17,3,24,0);
+        cumpleanos.toLocaleString()
+        */
         var histlon = [];
         var histlat=[];
-        var hist=[]
+        var hist=[];
         
-        var rd = `SELECT longitud, latitud, tiempo, vehiculo FROM gpsdata WHERE (tiempo BETWEEN '${fi}' AND '${ff}') AND (vehiculo='${id}')`;
-        //console.log(rd);
+        var rd = `SELECT longitud, latitud, tiempo, vehiculo FROM gpsdata WHERE (tiempo BETWEEN '${fiDate}' AND '${ffDate}') AND (vehiculo='${id}')`;
+        console.log(rd);
         database.query(rd, function (err, result) {
             
             if (err) throw err;
@@ -177,7 +158,7 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
     var stamptime= msg.toString('utf8').split("/")[2];
 
     var vehiculo = msg.toString('utf8').split("/")[3];
-        
+    var sensor = msg.toString('utf8').split("/")[4];
     var uppertime=stamptime.split(" ")[0]; //YYYY-MM-DD
     var downtime=stamptime.split(" ")[1];  //HH:MM:SS
 
@@ -187,11 +168,10 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
        
     //MODIFICAR LECTURA DEL ULTIMO DATO------------------------------------------------------------------------------
 
-    var timeformat= day+"/"+month+"/"+year+" "+downtime;
+    var timeformat= year+"-"+month+"-"+day+" "+downtime;
 
-        
 
-    var gpsinfo = latitud+"/"+longitud+"/"+timeformat+"/"+vehiculo;   
+    var gpsinfo = latitud+"/"+longitud+"/"+timeformat+"/"+vehiculo+"/"+sensor;   
 
     fs.writeFile('coordenadas.txt', gpsinfo, function(error){
 
