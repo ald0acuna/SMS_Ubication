@@ -115,7 +115,8 @@
                                     coor =[i.latitud,i.longitud]
                                     hist.push(coor)
                                     markerCircle = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'white'}) //CAMBIOOSSSSSSS
-                                    markerCircle.bindTooltip("</h4>tiempo: "+ i.stamptime)
+                                    var tiempoData = new Date(i.stamptime).toISOString().replace(/T/,' ').replace(/\..+/,' ')
+                                    markerCircle.bindTooltip("</h4>tiempo: "+ tiempoData)
                                     puntos.addLayer(markerCircle)
                                     //console.log(hist); //Repetido de linea 65 y 58
                                 } else {
@@ -123,7 +124,8 @@
                                     coorTwo =[i.latitud,i.longitud]
                                     histTwo.push(coorTwo)
                                     markerCircleTwo = L.circleMarker([i.latitud,i.longitud],{radius:2, color:'black'})
-                                    markerCircleTwo.bindTooltip("</h4>tiempo: "+ i.stamptime)
+                                    var tiempoData = new Date(i.stamptime).toISOString().replace(/T/,' ').replace(/\..+/,' ')
+                                    markerCircleTwo.bindTooltip("</h4>tiempo: "+ tiempoData)
                                     puntosTwo.addLayer(markerCircleTwo)
                                     //console.log(histTwo); //Repetido de linea 65 y 58
                                 }
