@@ -152,7 +152,7 @@ content .user-container .calendar .historicos {
     box-shadow: 0px 2px 2px 2px #48CFAD;
     width: 250px;
     /* height: 85px; */
-    height: 130px;
+    height: 105px;
     padding-top: 5px;
     padding-left:  5px;
     padding-right:  10px;
@@ -160,7 +160,7 @@ content .user-container .calendar .historicos {
     margin-top: 10px;
     position: absolute;
     z-index: 500;
-    top: 450px;
+    top: 475px;
     /* left: 480px; */
     left: -90px;
 }
@@ -202,10 +202,6 @@ content .user-container .calendar .historicos {
     align-items: center;
     padding-left: 8px;
     font-size: 8px;
-}
-
-.caja-sensor-two-class {
-    padding-top: 2px;
 }
 
 .sliders-content {
@@ -374,43 +370,77 @@ margin-top: 35px;
         margin-left: 5px;
     }
 
-    .content .buttonTR {
-        margin-left: 20px;
+    /*   Tiempo real   */
+
+    .content .tiemporeal {
+        display: flex;
+        
+    }
+    
+    .content .tiemporeal .ubication {
+        width: 140px;
+        height: 50px;
+        padding-top: 5px;
+        padding-left:  5px;
+        /* padding-right:  10px; */
+        padding-bottom: -10px;
+        margin-left: 10px;
+        margin-top: 2px;
+        /* margin-top: -8px; */
+    }
+    
+    .content .tiemporeal .ubication h3 {
+        font-size: 5px;
+        margin: 0px;
+        margin-bottom: 2px;
+    }
+    
+    .content .tiemporeal .ubication .form-container {
         height: 30px;
+    }
+    
+    .content .tiemporeal .ubication .form-container form {
+        display: grid;
+        grid-template-columns: 28% 1fr;
+        grid-template-rows: repeat(3,1fr);
+        /* row-gap: 20px; */
+        padding-top: 2px;
+    }
+    
+    .content .tiemporeal .ubication .form-container form label {
+        font-size: 4px;
+        margin-right:20px;
+        margin-bottom: 0px;
+        /* margin-bottom: 20px; */
+    }
+    
+    .content .tiemporeal .ubication .form-container form div {
         width: 100px;
-        margin-top: 20px;
-        position: absolute;
-        z-index: 600;
-        left: 470px;
-        top: -12px;
+        height: 7px;
+        /* margin-left: 10px; */
+        margin-left: -10px;
+        margin-bottom: 5px;
+        display: grid;
+        align-items: center;
+        padding-left: 8px;
+        font-size: 5px;
+        margin-bottom: 0px;
+    }
+
+    .content .tiemporeal button {
+        /* margin-left: 35px; */
+        margin-left: 15px;
+        height: 30px;
+        width: 105px;
+        margin-top: 13px;
     }
 
 } 
 
-/* @media screen and (max-width: 820px) {
+@media screen and (max-width: 820px) {
      .container-css .content .user-container {
         display: block;
     } 
-} */
-
-@media screen and (max-width: 650px) {
-
-    .user-container .calendar input {
-        width: 97px;
-    }
-
-    .user-container .calendar button {
-        height: 25px;
-        font-size: 12px;
-        width: 80px;
-        margin-left: 5px;
-        margin-top: 25px;
-    }
-
-    .content .buttonTR {
-        left: -10px;
-        top: 20px;
-    }
 }
 
 @media screen and (max-width: 480px) {
@@ -454,6 +484,23 @@ margin-top: 35px;
         left: -300px;
     }
 
+    .content .tiemporeal button {
+        /* margin-left: 35px; */
+        margin-left: 15px;
+        height: 25px;
+        width: 95px;
+        margin-top: 20px;
+        font-size: 11px;
+        position: relative;
+        z-index: 100;
+        bottom: 75px;
+        left: 10px;
+    }
+
+    
+}
+
+@media screen and (max-width: 480px) {
     .user-container .calendar button {
         height: 25px;
         font-size: 11px;
@@ -461,18 +508,14 @@ margin-top: 35px;
         margin-left: 5px;
     }
 
-    .content .buttonTR {
-        margin-left: 20px;
-        height: 30px;
-        width: 100px;
+    .content .tiemporeal button {
+        /* margin-left: 35px; */
+        margin-left: 15px;
+        height: 25px;
+        width: 95px;
         margin-top: 20px;
-        position: absolute;
-        z-index: 600;
-        left: 380px;
-        top: -2px;
+        font-size: 11px;
     }
-
-
 }
 
 @media screen and (max-width: 400px) {
@@ -491,15 +534,5 @@ margin-top: 35px;
 
     .content .tiemporeal button {
         left: -15px;
-    }
-}
-
-@media screen and (max-height: 620px) {
-    .content .ubication {
-        position: absolute;
-        z-index: 500;
-        top: 420px;
-        /* left: 480px; */
-        left: -90px;
     }
 }

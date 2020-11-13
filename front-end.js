@@ -116,11 +116,6 @@ form.addEventListener('submit', (e) => {
     
     
     document.getElementById("mymap").style.display = "block";
-    document.getElementById("caja-sensor-two").style.display = "none"
-    document.getElementById("labelsen2").style.display = "none"
-
-    document.getElementById("slide-one").style.display = "block";
-    document.getElementById("slide-two").style.display = "block";
 
     document.getElementById("mymapTR").style.display = "none";
 
@@ -382,26 +377,7 @@ form.addEventListener('submit', (e) => {
 
         slider.style.display = "block";
 
-        start1.setLatLng(hist[0]).update();
-        end1.setLatLng(hist[hist.length-1]).update();
-        slider.value = `${0}`; //START VALUE
-                
-        slider.min = `${0}`; //MIN VALUE
-        slider.max = `${hist.length-1}`;  //MAX VALUE
-        truck1.setLatLng(hist[slider.value]).update();
-
         slider2.style.display = "block";
-
-        start2.setLatLng(histTwo[0]).update();
-        end2.setLatLng(histTwo[histTwo.length-1]).update();
-
-        slider2.value = `${0}`; //START VALUE
-                
-        slider2.min = `${0}`; //MIN VALUE
-        slider2.max = `${histTwo.length-1}`;  //MAX VALUE
-
-        truck2.setLatLng(histTwo[slider2.value]).update();
-
 
         puntos.addLayer(truck1);
         puntos.addLayer(start1);
@@ -484,10 +460,6 @@ function tiempoReal(){
     modo=0;
     document.getElementById("mymapTR").style.display = "block";
     document.getElementById("mymap").style.display = "none";
-    document.getElementById("slide-one").style.display = "none";
-    document.getElementById("slide-two").style.display = "none";
-    document.getElementById("caja-sensor-two").style.display = "block"
-    document.getElementById("labelsen2").style.display = "block"
     
 }
 function readFile(){
@@ -512,19 +484,14 @@ function readFile(){
             $("#caja-latitude").text(lat);
             $("#caja-longitude").text(lon);
             $("#caja-stamptime").text(sT);
-            if(veh==1){
-                $("#caja-sensor").text(sen);
-            } else {
-                $("#caja-sensor-two").text(sen);
-            }
-            
+            $("#caja-sensor").text(sen);
         }
 
         if(veh==1){
             var coorsgt =[lat, lon];
             marker.setLatLng([lat, lon]).update();
             marker.addTo(myMapTR);
-            /* myMapTR.setView([lat, lon]) */
+            myMapTR.setView([lat, lon])
             if (coor[0]!=coorsgt[0] && coor[1]!=coorsgt[1]  ) {
                 cArray.push(coorsgt)
                 line(cArray);                         
@@ -533,7 +500,7 @@ function readFile(){
             var coorsgt1 =[lat, lon];
             marker4.setLatLng([lat, lon]).update();
             marker4.addTo(myMapTR);
-            /* myMapTR.setView([lat, lon]) */
+            myMapTR.setView([lat, lon])
             if (coor[0]!=coorsgt1[0] && coor[1]!=coorsgt1[1]  ) {
                 cArray1.push(coorsgt1)
                 line1(cArray1);                         

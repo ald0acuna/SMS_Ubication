@@ -63,12 +63,33 @@ httpserver.get('/js/jquery-3.5.1.min.js', (req,res) => {
    
 });
 
-httpserver.get('/js/ubicacion.png', (req,res) => {
-    res.sendFile(__dirname + '/js/ubicacion.png');
+httpserver.get('/ubicacion.png', (req,res) => {
+    res.sendFile(__dirname + '/ubicacion.png');
 });
 
 httpserver.get('/coordenadas.txt', (req,res) => {
     res.sendFile(__dirname + '/coordenadas.txt');
+});
+
+httpserver.get('/finish32.png', (req,res) => {
+    res.sendFile(__dirname + '/finish32.png');
+});
+
+httpserver.get('/end2.png', (req,res) => {
+    res.sendFile(__dirname + '/end2.png');
+});
+
+httpserver.get('/start24.png', (req,res) => {
+    res.sendFile(__dirname + '/start24.png');
+});
+httpserver.get('/start2.png', (req,res) => {
+    res.sendFile(__dirname + '/start2.png');
+});
+httpserver.get('/truck.png', (req,res) => {
+    res.sendFile(__dirname + '/truck.png');
+});
+httpserver.get('/truck2.png', (req,res) => {
+    res.sendFile(__dirname + '/truck2.png');
 });
 
 httpserver.get('/archivos/jquery.js', (req,res) => {
@@ -99,7 +120,7 @@ io.on('connection', socket => {
         
         var fi = msg[0];
         var ff = msg[1];
-        var id = msg[2];
+        var identificador = msg[2]; //------------------------CAMBIOSSS------------------------------//
         //console.log("f---- "+fi+"  "+ff);
         var fi_up= fi.split(" ")[0];
         var fi_down= fi.split(" ")[1];
@@ -112,15 +133,16 @@ io.on('connection', socket => {
         fiDate = yeari+'-'+monthi+'-'+dayi+' '+hi+':'+mi+':00';
         
         var ff_up= ff.split(" ")[0];
+        var ff_down= ff.split(" ")[1];
         var yearf =ff_up.split("/")[0]; //año
         var monthf =ff_up.split("/")[1]; //mes
         var dayf =ff_up.split("/")[2]; //dia
 
-        var hf = fi_down.split(":")[0];
-        var mf = fi_down.split(":")[1];
+        var hf = ff_down.split(":")[0];
+        var mf = ff_down.split(":")[1];
 
         ffDate = yearf+'-'+monthf+'-'+dayf+' '+hf+':'+mf+':00';
-        console.log(ffDate);
+        /* console.log(ffDate); */
 
         /*
         cumpleanos = new Date(1995,0,17,3,24,0);
@@ -129,23 +151,26 @@ io.on('connection', socket => {
         var histlon = [];
         var histlat=[];
         var hist=[];
-        
-        var rd = `SELECT longitud, latitud, stamptime, vehiculo FROM muestreo WHERE (stamptime BETWEEN '${fiDate}' AND '${ffDate}')`;
+
+
+        console.log("Fecha inicial llegada al back end: "+fiDate);
+        console.log("Fecha final llegada al back end: "+ffDate);
+
+
+        var rd = `SELECT longitud, latitud, stamptime, vehiculo, sensor FROM muestreo WHERE (stamptime BETWEEN '${fiDate}' AND '${ffDate}') ORDER BY stamptime`;
         console.log(rd);
         database.query(rd, function (err, result) {
             
             if (err) throw err;
-
+            /* console.log(result); */
             socket.emit('historia', result); 
         });
 
+        socket.emit('carrito',identificador); //------------------------CAMBIOSSS------------------------------//
+
     });
 
-});
-
-
-
-udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'message' y msg
+    udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'message' y msg
         
     console.log('Truck Tracer for udp\n');
 
@@ -171,8 +196,8 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
     var timeformat= year+"-"+month+"-"+day+" "+downtime;
 
 
-    var gpsinfo = latitud+"/"+longitud+"/"+timeformat+"/"+vehiculo+"/"+sensor;   
-
+ /*    var gpsinfo = latitud+"/"+longitud+"/"+timeformat+"/"+vehiculo+"/"+sensor;   */ 
+/* 
     fs.writeFile('coordenadas.txt', gpsinfo, function(error){
 
 
@@ -181,20 +206,45 @@ udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'mes
         }
         console.log("File created");
         console.log(gpsinfo);
-    })
+    }) */
 
 
-    truckdata = {latitud: latitud, longitud: longitud, stamptime : timeformat, vehiculo: vehiculo, sensor:sensor }
 
-    let sql = 'INSERT INTO muestreo SET ?';
 
-    let query = database.query(sql,truckdata,(err,result) =>{
-        if(err) throw err;
-    }) 
 
-    console.log("time format: "+timeformat);      
+    
+
+    
+        truckdata = {latitud: latitud, longitud: longitud, stamptime : timeformat, vehiculo: vehiculo, sensor:sensor }
+
+        let sql = 'INSERT INTO muestreo SET ?';
+
+        let query = database.query(sql,truckdata,(err,result) =>{
+            if(err) throw err;
+        }) 
+   
+    console.log("time format: "+timeformat); 
+    
+     /*------------ CAMBIOS TIEMPO REAL-------------------*/
+    
+     var tr = `SELECT latitud, longitud, stamptime, vehiculo, sensor FROM gpsdata.muestreo WHERE id=(SELECT MAX(id) FROM gpsdata.muestreo)`;
+     database.query(tr, function (err, result) {
+             
+         if (err) throw err;
+     
+         socket.emit('tiempo', result);
+         console.log("result: "+result) 
+     });
 
 });
+
+
+
+});
+
+
+
+
 
 
 udpserver.on('listening', () => {
