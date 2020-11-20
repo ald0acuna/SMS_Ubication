@@ -21,6 +21,14 @@ slider2.style.display = "none";
 
 var modo = 0; //TIEMPO REAL
 
+var enable1 =0; //Habilitadores de centralización TR
+var enable2=0;
+
+var lat1=0; //Inicialización de la centralización de los mapas en TR
+var lon1=0;
+
+var lat2=0;//Inicialización de la centralización de los mapas en TR
+var lon2=0;
 
 //Leyenda Vehículo 1 
 const vehiculo1 = L.icon({
@@ -46,26 +54,8 @@ const final = L.icon({
     iconAnchor: [16,32]			
 })
 
-//Marker vehículo 2 tiempo real
-const markerred = L.icon({
-    iconUrl: 'ubicacion.png',	
-    iconAnchor: [15,15]			
-})
-
-
-/* //Inicio2 Leyenda
-const inicio2 = L.icon({
-    iconUrl: 'start2.png',	
-    iconAnchor: [16,27]			
-})	
-
-//Final2 Leyenda
-const final2 = L.icon({
-    iconUrl: 'end2.png',	
-    iconAnchor: [16,32]			
-}) */
-marker=L.marker([0,0]);
-marker4=L.marker([0,0]),{icon: markerred}
+marker=L.marker([0,0]); // Vehiculo 2 TR
+marker4=L.marker([0,0]); //Vehiculo 1 TR
 truck1 = L.marker([0,0],{icon: vehiculo1})
 truck2 = L.marker([0,0],{icon: vehiculo2})
 start1 = L.marker([0,0],{icon: inicio1})
@@ -74,8 +64,6 @@ end1 = L.marker([0,0],{icon: final})
 end2 = L.marker([0,0],{icon: final})
 
 
-
-//const slider = document.getElementById("slider2");
 
 L.tileLayer(tilesprovider,{
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -97,6 +85,8 @@ hist = [];
 polyline =L.polyline(hist, {color: 'red'}).addTo(myMap); // myMap=mapa de historicos
 polylineTwo =L.polyline(hist, {color: 'blue'}).addTo(myMap);
 
+var polyline1 =L.polyline(hist, {color: 'red'}).addTo(myMapTR); // myMapTR=mapa de tiempo real
+var polyline2 =L.polyline(hist, {color: 'blue'}).addTo(myMapTR);
 
 const form = document.getElementById('form')
 
@@ -113,8 +103,9 @@ form.addEventListener('submit', (e) => {
     puntos.clearLayers();
     puntosTwo.clearLayers();
 
-    
-    
+    document.getElementById("labelsen").innerHTML = "Sensor:";
+    document.getElementById("caja-sensor").style.display = "block"
+    document.getElementById("labelsen").style.display = "block"
     document.getElementById("mymap").style.display = "block";
     document.getElementById("caja-sensor-two").style.display = "none"
     document.getElementById("labelsen2").style.display = "none"
@@ -126,9 +117,9 @@ form.addEventListener('submit', (e) => {
 
     inicio = e.target.elements.date_timepicker_start.value;
     fin = e.target.elements.date_timepicker_end.value;
-    /* console.log("Inicio: "+inicio+",fin: "+fin) */
+  
     vehiculo= e.target.elements.carro.value;
-    console.log("Este es el vehiculo numero: "+ vehiculo); //------------------------CAMBIOSSS------------------------------//
+    console.log("Este es el vehiculo numero: "+ vehiculo); 
     console.log("Fecha inicial: "+ inicio); 
     console.log("Fecha final: "+ fin); 
     modo=1;
@@ -157,7 +148,7 @@ form.addEventListener('submit', (e) => {
         if (output.length !=0){
 
             for (var i of output) {
-                /* console.log("variable i.v: "+i.vehiculo) */
+               
                 if(i.vehiculo==1){
 
                     coor =[i.latitud,i.longitud]
@@ -180,36 +171,10 @@ form.addEventListener('submit', (e) => {
         
 
 
-/* 
-            start1.setLatLng(hist[0]).update();
-            start2.setLatLng(histTwo[0]).update();
-            end1.setLatLng(hist[hist.length-1]).update();
-            end2.setLatLng(histTwo[histTwo.length-1]).update();
-            
-            slider.value = `${0}`; //START VALUE
-                
-            slider.min = `${0}`; //MIN VALUE
-            slider.max = `${hist.length-1}`;  //MAX VALUE
 
-            slider2.value = `${0}`; //START VALUE
-                
-            slider2.min = `${0}`; //MIN VALUE
-            slider2.max = `${histTwo.length-1}`;  //MAX VALUE
             
-            truck1.setLatLng(hist[slider.value]).update();
-            truck2.setLatLng(histTwo[slider2.value]).update();
+            
 
-            puntos.addLayer(truck1);
-            puntos.addLayer(start1);
-            puntos.addLayer(end1);
-
-            puntosTwo.addLayer(truck2);
-            puntosTwo.addLayer(start2);
-            puntosTwo.addLayer(end2);
-            
-            
-            
- */
             console.log("hist 2: "+ histTwo.length)
             console.log("hist 1: "+ hist.length)
             console.log(vehiculo);
@@ -265,36 +230,6 @@ form.addEventListener('submit', (e) => {
 
             }
 
-
-
-           /*  if (hist.length != 0 && histTwo.length != 0 ){ 
-                
-                
-                polyline.setLatLngs(hist);
-                polylineTwo.setLatLngs(histTwo);
-                if(hist.length!=0){
-                    myMap.setView(polyline.getCenter())
-                }else{
-                    myMap.setView(polylineTwo.getCenter())
-                }
-                
-                
-                
-            } else {
-                if (hist.length != 0){
-
-                    alert("No hay recorridos dentro de las fechas ingresadas dentro del vehiculo 2")
-                    polyline.setLatLngs(hist);
-                    polylineTwo.setLatLngs([]);
-                    myMap.setView(polyline.getCenter())
-
-                }else{
-                    alert("No hay recorridos dentro de las fechas ingresadas dentro del vehiculo 1")
-                    polyline.setLatLngs([]);
-                    polylineTwo.setLatLngs(histTwo);
-                    myMap.setView(polylineTwo.getCenter())
-                }
-            } */
 
 
             slider.addEventListener("input", sliderUpdate);
@@ -422,46 +357,6 @@ form.addEventListener('submit', (e) => {
         puntosTwo.addTo(myMap)
     }
 
-        //------------------------CAMBIOSSS------------------------------//
-    /* socket.on('carrito', function (identificador){
-            if(identificador==1){
-
-                slider.style.display = "block";
-
-                 slider2.style.display = "none";
-                console.log('Es el vehiculo uno');
-                myMap.removeLayer(puntosTwo);
-                myMap.addLayer(polyline);
-                myMap.removeLayer(polylineTwo);
-                 myMap.setView(polyline.getCenter())  
-                 polylineTwo.setStyle(opacity=0.0); 
-                puntos.addTo(myMap) 
-        
-            }
-            if(identificador==2){
-                slider.style.display = "none";
-
-                slider2.style.display = "block";
-                myMap.removeLayer(puntos);
-                myMap.addLayer(polylineTwo);
-                myMap.removeLayer(polyline);
-               myMap.setView(polylineTwo.getCenter()) 
-                console.log('Es el vehiculo dos');
-                puntosTwo.addTo(myMap)
-            }
-            if(identificador==3){
-                slider.style.display = "block";
-
-                slider2.style.display = "block";
-                myMap.addLayer(polyline);
-                myMap.addLayer(polylineTwo);
-                console.log('Es el vehiculo tres');
-                puntos.addTo(myMap)
-                puntosTwo.addTo(myMap)
-            }     
-                
-    });  */
-
     
 
 });
@@ -481,13 +376,64 @@ function sliderUpdate2(){
 
 
 function tiempoReal(){
+    vehicle= document.getElementById('carro').value;
+    console.log(vehicle);
     modo=0;
+    document.getElementById("labelsen").innerHTML = "Sensor1:";
+    if(vehicle==1){
+
+        polyline1.addTo(myMapTR); 
+        polyline2.remove(myMapTR); 
+        marker4.addTo(myMapTR);
+        marker.remove(myMapTR);
+        document.getElementById("caja-sensor").style.display = "block"
+        document.getElementById("labelsen").style.display = "block"
+        document.getElementById("caja-sensor-two").style.display = "none"
+        document.getElementById("labelsen2").style.display = "none"
+
+        if (enable1==1){
+
+             myMapTR.setView([lat1, lon1]);
+
+        }
+        
+    }else{
+
+        if(vehicle==2){
+
+            polyline2.addTo(myMapTR); 
+            polyline1.remove(myMapTR); 
+            marker.addTo(myMapTR);
+            marker4.remove(myMapTR);
+            document.getElementById("caja-sensor").style.display = "none"
+            document.getElementById("labelsen").style.display = "none"
+            document.getElementById("caja-sensor-two").style.display = "block"
+            document.getElementById("labelsen2").style.display = "block"
+
+            if (enable2==1){
+
+                myMapTR.setView([lat2, lon2]);
+            }
+
+        }else{
+
+            polyline1.addTo(myMapTR); 
+            polyline2.addTo(myMapTR); 
+            marker.addTo(myMapTR);
+            marker4.addTo(myMapTR);
+            document.getElementById("caja-sensor").style.display = "block"
+            document.getElementById("labelsen").style.display = "block"
+            document.getElementById("caja-sensor-two").style.display = "block"
+            document.getElementById("labelsen2").style.display = "block"
+
+        }
+    }
+
     document.getElementById("mymapTR").style.display = "block";
     document.getElementById("mymap").style.display = "none";
     document.getElementById("slide-one").style.display = "none";
     document.getElementById("slide-two").style.display = "none";
-    document.getElementById("caja-sensor-two").style.display = "block"
-    document.getElementById("labelsen2").style.display = "block"
+
     
 }
 function readFile(){
@@ -514,26 +460,30 @@ function readFile(){
             $("#caja-stamptime").text(sT);
             if(veh==1){
                 $("#caja-sensor").text(sen);
+                lat1=j.latitud;
+                lon1=j.longitud;
             } else {
+                lat2=j.latitud;
+                lon2=j.longitud;
                 $("#caja-sensor-two").text(sen);
             }
             
         }
 
         if(veh==1){
+            enable1= 1;
             var coorsgt =[lat, lon];
-            marker.setLatLng([lat, lon]).update();
-            marker.addTo(myMapTR);
-            /* myMapTR.setView([lat, lon]) */
+            marker4.setLatLng([lat, lon]).update();
+           
             if (coor[0]!=coorsgt[0] && coor[1]!=coorsgt[1]  ) {
                 cArray.push(coorsgt)
                 line(cArray);                         
             }
         }else{
+            enable2= 1;
             var coorsgt1 =[lat, lon];
-            marker4.setLatLng([lat, lon]).update();
-            marker4.addTo(myMapTR);
-            /* myMapTR.setView([lat, lon]) */
+            marker.setLatLng([lat, lon]).update();
+        
             if (coor[0]!=coorsgt1[0] && coor[1]!=coorsgt1[1]  ) {
                 cArray1.push(coorsgt1)
                 line1(cArray1);                         
@@ -543,10 +493,14 @@ function readFile(){
             
         
         function line(cArray){
-            var polyline =L.polyline(cArray, {color: 'red'}).addTo(myMapTR);
+            polyline1.setLatLngs(cArray);
+           
         }
         function line1(cArray1){
-            var polyline1 =L.polyline(cArray1, {color: 'blue'}).addTo(myMapTR);
+            polyline2.setLatLngs(cArray1);
+            console.log(polyline2.length);
+            console.log(polyline1.length);
+          
         } 
 
 

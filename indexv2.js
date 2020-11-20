@@ -112,6 +112,7 @@ udpserver.on('error', (err)=>{
 
 console.log('server error:\n${err.stack}')
 udpserver.close();
+
 })
  
 io.on('connection', socket => {
@@ -120,8 +121,8 @@ io.on('connection', socket => {
         
         var fi = msg[0];
         var ff = msg[1];
-        var identificador = msg[2]; //------------------------CAMBIOSSS------------------------------//
-        //console.log("f---- "+fi+"  "+ff);
+        var identificador = msg[2]; 
+     
         var fi_up= fi.split(" ")[0];
         var fi_down= fi.split(" ")[1];
         var yeari =fi_up.split("/")[0]; //año
@@ -142,12 +143,7 @@ io.on('connection', socket => {
         var mf = ff_down.split(":")[1];
 
         ffDate = yearf+'-'+monthf+'-'+dayf+' '+hf+':'+mf+':00';
-        /* console.log(ffDate); */
-
-        /*
-        cumpleanos = new Date(1995,0,17,3,24,0);
-        cumpleanos.toLocaleString()
-        */
+      
         var histlon = [];
         var histlat=[];
         var hist=[];
@@ -162,59 +158,40 @@ io.on('connection', socket => {
         database.query(rd, function (err, result) {
             
             if (err) throw err;
-            /* console.log(result); */
+           
             socket.emit('historia', result); 
         });
 
-        socket.emit('carrito',identificador); //------------------------CAMBIOSSS------------------------------//
+        socket.emit('carrito',identificador); 
 
     });
 
     udpserver.on('message', function(msg){  // no recibe si cambio el nombre de 'message' y msg
         
-    console.log('Truck Tracer for udp\n');
+        console.log('Truck Tracer for udp\n');
 
-    console.log(msg.toString('utf8'));
-                
-    var latitud= msg.toString('utf8').split("/")[0];
-    latitud=  latitud;
-    var longitud= msg.toString('utf8').split("/")[1];
-    longitud=  longitud;
-    var stamptime= msg.toString('utf8').split("/")[2];
+        console.log(msg.toString('utf8'));
+                    
+        var latitud= msg.toString('utf8').split("/")[0];
+        latitud=  latitud;
+        var longitud= msg.toString('utf8').split("/")[1];
+        longitud=  longitud;
+        var stamptime= msg.toString('utf8').split("/")[2];
 
-    var vehiculo = msg.toString('utf8').split("/")[3];
-    var sensor = msg.toString('utf8').split("/")[4];
-    var uppertime=stamptime.split(" ")[0]; //YYYY-MM-DD
-    var downtime=stamptime.split(" ")[1];  //HH:MM:SS
+        var vehiculo = msg.toString('utf8').split("/")[3];
+        var sensor = msg.toString('utf8').split("/")[4];
+        var uppertime=stamptime.split(" ")[0]; //YYYY-MM-DD
+        var downtime=stamptime.split(" ")[1];  //HH:MM:SS
 
-    var year =uppertime.split("-")[0]; //año
-    var month =uppertime.split("-")[1]; //mes
-    var day =uppertime.split("-")[2]; //dia
-       
-    //MODIFICAR LECTURA DEL ULTIMO DATO------------------------------------------------------------------------------
-
-    var timeformat= year+"-"+month+"-"+day+" "+downtime;
-
-
- /*    var gpsinfo = latitud+"/"+longitud+"/"+timeformat+"/"+vehiculo+"/"+sensor;   */ 
-/* 
-    fs.writeFile('coordenadas.txt', gpsinfo, function(error){
+        var year =uppertime.split("-")[0]; //año
+        var month =uppertime.split("-")[1]; //mes
+        var day =uppertime.split("-")[2]; //dia
+        
+        
+        var timeformat= year+"-"+month+"-"+day+" "+downtime;
 
 
-        if(error){
-            return console.log(error);
-        }
-        console.log("File created");
-        console.log(gpsinfo);
-    }) */
-
-
-
-
-
-    
-
-    
+        
         truckdata = {latitud: latitud, longitud: longitud, stamptime : timeformat, vehiculo: vehiculo, sensor:sensor }
 
         let sql = 'INSERT INTO muestreo SET ?';
@@ -222,29 +199,23 @@ io.on('connection', socket => {
         let query = database.query(sql,truckdata,(err,result) =>{
             if(err) throw err;
         }) 
-   
-    console.log("time format: "+timeformat); 
     
-     /*------------ CAMBIOS TIEMPO REAL-------------------*/
-    
-     var tr = `SELECT latitud, longitud, stamptime, vehiculo, sensor FROM gpsdata.muestreo WHERE id=(SELECT MAX(id) FROM gpsdata.muestreo)`;
-     database.query(tr, function (err, result) {
-             
-         if (err) throw err;
-     
-         socket.emit('tiempo', result);
-         console.log("result: "+result) 
-     });
+        console.log("time format: "+timeformat); 
+        
+        var tr = `SELECT latitud, longitud, stamptime, vehiculo, sensor FROM gpsdata.muestreo WHERE id=(SELECT MAX(id) FROM gpsdata.muestreo)`;
+        database.query(tr, function (err, result) {
+                
+            if (err) throw err;
+        
+            socket.emit('tiempo', result);
+            console.log("result: "+result) 
+        });
 
-});
+    });
 
 
 
 });
-
-
-
-
 
 
 udpserver.on('listening', () => {
